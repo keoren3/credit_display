@@ -29,6 +29,7 @@ def is_excel_date_type(cell):
 def excel_date_to_datetime(cell, workbook):
     py_date = datetime(
         *xlrd.xldate_as_tuple(cell.value, workbook.datemode))
+    # TODO : caclcaute generel year,now only for 2020 s.t = 2020/100 = 20
     date = "{}/{}/{}".format(py_date.day, py_date.month, int(py_date.year/100))
     return str(date)
 
@@ -69,10 +70,10 @@ def main():
     args = parse_args()
     transactions_arr = get_data_from_excel(args.sheet_name)
 
-    # print("All tansactions: {0}".format(transactions_arr))
+    print("All tansactions: {0}".format(transactions_arr))
 
-    # handle_db("mongodb+srv://{0}:{1}@creditdata-xurnm.mongodb.net/test".format(args.db_user, args.db_pass),
-    #           "test-collection", transactions_arr)
+    handle_db("mongodb+srv://{0}:{1}@creditdata-xurnm.mongodb.net/test".format(args.db_user, args.db_pass),
+              "test-collection", transactions_arr)
 
 
 if __name__ == "__main__":
