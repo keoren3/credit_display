@@ -1,7 +1,7 @@
 import argparse
 import json
 import xlrd
-
+import re
 from datetime import datetime
 from db_handler import db_handler
 from pymongo import MongoClient
@@ -27,7 +27,10 @@ def is_excel_date_type(cell):
 
 
 def excel_date_to_datetime(cell, workbook):
-    return xlrd.xldate.xldate_as_datetime(cell.value, workbook.datemode)
+    py_date = datetime(
+        *xlrd.xldate_as_tuple(cell.value, workbook.datemode))
+    date = "{}/{}/{}".format(py_date.day, py_date.month, int(py_date.year/100))
+    return str(date)
 
 
 def get_transactions(workbook, first_sheet):
@@ -38,9 +41,11 @@ def get_transactions(workbook, first_sheet):
         [date, bussines_name, deal_value, chrage_value, another_details] = [
             str(element).replace("text", '') for element in row]
         if(is_excel_date_type(row[0])):
-            date = str(excel_date_to_datetime(row[0], workbook))
-        curr_deal = {'deal_date ': date, 'bussines_name': (bussines_name), 'deal_value': (deal_value), 'chrage_value': (chrage_value),
+            date = (excel_date_to_datetime(row[0], workbook))
+        clean_date = re.sub(r'[^-//0-9]', "", date)
+        curr_deal = {'deal_date ': clean_date, 'bussines_name': (bussines_name), 'deal_value': (deal_value), 'chrage_value': (chrage_value),
                      'more details': (another_details)}
+        print(curr_deal)
         transactions.append(curr_deal)
     return transactions
 
@@ -64,10 +69,10 @@ def main():
     args = parse_args()
     transactions_arr = get_data_from_excel(args.sheet_name)
 
-    print("All tansactions: {0}".format(transactions_arr))
+    # print("All tansactions: {0}".format(transactions_arr))
 
-    handle_db("mongodb+srv://{0}:{1}@creditdata-xurnm.mongodb.net/test".format(args.db_user, args.db_pass),
-              "test-collection", transactions_arr)
+    # handle_db("mongodb+srv://{0}:{1}@creditdata-xurnm.mongodb.net/test".format(args.db_user, args.db_pass),
+    #           "test-collection", transactions_arr)
 
 
 if __name__ == "__main__":
