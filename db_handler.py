@@ -8,7 +8,6 @@ class db_handler:
         self._collection = collection
         self._db = None
 
-
     def insert_transactions_db(self, data):
         """
         Inserts all the transactions to the database
@@ -18,8 +17,11 @@ class db_handler:
         self._db[self._collection].insert_many(data)
         print("Finished inserting!")
 
-
     def connect_to_db(self):
         print("Connecting to database....")
         client = MongoClient(self._url)
-        self._db = client[self._collection]
+        self._db = client["database"]
+
+    def remove_collection_from_db(self):
+        print("Removing collection")
+        self._db[self._collection].drop()
