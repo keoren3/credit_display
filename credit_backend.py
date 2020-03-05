@@ -37,12 +37,12 @@ def get_transactions(workbook, first_sheet):
     for i in range(first_sheet.nrows):
         row = first_sheet.row(i)
         # unpack row to vars ,str each element for json
-        [date, bussines_name, deal_value, chrage_value, another_details] = [
+        [date, bussiness_name, deal_value, charge_value, more_details] = [
             str(element).replace("text", '') for element in row]
         if(is_excel_date_type(row[0])):
             date = str(excel_date_to_datetime(row[0], workbook))
-        curr_deal = {'deal_date ': date, 'bussines_name': (bussines_name), 'deal_value': (deal_value), 'chrage_value': (chrage_value),
-                     'more details': (another_details)}
+        curr_deal = {'deal_date ': date, 'bussiness_name': (bussiness_name), 'deal_value': (deal_value), 'charge_value': (charge_value),
+                     'more_details': (more_details)}
         transactions.append(curr_deal)
     return transactions
 
@@ -63,6 +63,9 @@ def main():
     print("All tansactions: {0}".format(transactions_arr))
     db = db_handler("mongodb+srv://{0}:{1}@creditdata-xurnm.mongodb.net/test".format(args.db_user, args.db_pass))
     db.connect_to_db(args.db_name)
+    if args.collection in db.get_collections_list():
+        print("Collection already in db, deleting it...")
+        db.remove_collection_from_db(args.collection)
     db.connect_to_collection(args.collection)
     db.insert_transactions(transactions_arr)
     shop_amount = db.get_shop_and_amount()
