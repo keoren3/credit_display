@@ -1,7 +1,7 @@
 import argparse
 import json
 import xlrd
-import re
+
 from datetime import datetime
 from db_handler import db_handler
 from pymongo import MongoClient
@@ -13,9 +13,11 @@ def parse_args():
     parser.add_argument('--sheet_name', help='Original excel file from credit card company',
                         default="credit_expenses.xls", required=False)
     parser.add_argument('--db_user', help='User name to connect to database',
-                        default="imridb", required=False)
-    parser.add_argument('--db_pass', help='password to connect to database',
-                        default="imri123!", required=False)
+                        required=True)
+    parser.add_argument('--db_pass', help='Password to connect to database',
+                        required=True)
+    parser.add_argument('--db_name', help='Database name', required=True)
+    parser.add_argument('--collection', help='Collection name', required=True)
 
     return parser.parse_args()
 
@@ -27,11 +29,7 @@ def is_excel_date_type(cell):
 
 
 def excel_date_to_datetime(cell, workbook):
-    py_date = datetime(
-        *xlrd.xldate_as_tuple(cell.value, workbook.datemode))
-    # TODO : caclcaute generel year,now only for 2020 s.t = 2020/100 = 20
-    date = "{}/{}/{}".format(py_date.day, py_date.month, int(py_date.year/100))
-    return str(date)
+    return xlrd.xldate.xldate_as_datetime(cell.value, workbook.datemode)
 
 
 def get_transactions(workbook, first_sheet):
@@ -42,11 +40,9 @@ def get_transactions(workbook, first_sheet):
         [date, bussines_name, deal_value, chrage_value, another_details] = [
             str(element).replace("text", '') for element in row]
         if(is_excel_date_type(row[0])):
-            date = (excel_date_to_datetime(row[0], workbook))
-        clean_date = re.sub(r'[^-//0-9]', "", date)
-        curr_deal = {'deal_date ': clean_date, 'bussines_name': (bussines_name), 'deal_value': (deal_value), 'chrage_value': (chrage_value),
+            date = str(excel_date_to_datetime(row[0], workbook))
+        curr_deal = {'deal_date ': date, 'bussines_name': (bussines_name), 'deal_value': (deal_value), 'chrage_value': (chrage_value),
                      'more details': (another_details)}
-        print(curr_deal)
         transactions.append(curr_deal)
     return transactions
 
@@ -60,20 +56,19 @@ def get_data_from_excel(sheet_name):
     return get_transactions(workbook, first_sheet)
 
 
-def handle_db(url, collection, data):
-    db = db_handler(url, collection)
-    db.connect_to_db()
-    db.insert_transactions_db(data)
-
-
 def main():
     args = parse_args()
     transactions_arr = get_data_from_excel(args.sheet_name)
 
     print("All tansactions: {0}".format(transactions_arr))
+    db = db_handler("mongodb+srv://{0}:{1}@creditdata-xurnm.mongodb.net/test".format(args.db_user, args.db_pass))
+    db.connect_to_db(args.db_name)
+    db.connect_to_collection(args.collection)
+    db.insert_transactions(transactions_arr)
+    shop_amount = db.get_shop_and_amount()
 
-    handle_db("mongodb+srv://{0}:{1}@creditdata-xurnm.mongodb.net/test".format(args.db_user, args.db_pass),
-              "test-collection", transactions_arr)
+    print("Shop and amount: {0}".format(shop_amount))
+
 
 
 if __name__ == "__main__":
