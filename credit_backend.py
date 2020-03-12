@@ -6,22 +6,37 @@ from datetime import datetime
 from db_handler import db_handler
 
 
+cli = {
+    'sheet_name': 'get_data_from_excel',
+    'db_user': 'db_handler',
+    'db_pass': 'db_handler',
+    'db_name': 'connect_to_db',
+    'collection': 'connect_to_collection'
+}
+
+
+def function_caller(args):
+    for k in vars(args):
+        print("k = %s" % k)
+        print("args[k] = %s" % getattr(args, k))
+
+
 def parse_args():
-    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser = argparse.ArgumentParser(prog="Credit Display", usage="Display credit expanses")
     parser.add_argument('--sheet_name', help='Original excel file from credit card company',
                         default="credit_expenses.xls", required=False)
     parser.add_argument('--db_user', help='User name to connect to database',
-                        required=True)
+                        required=False)
     parser.add_argument('--db_pass', help='Password to connect to database',
-                        required=True)
-    parser.add_argument('--db_name', help='Database name', required=True)
-    parser.add_argument('--collection', help='Collection name', required=True)
+                        required=False)
+    parser.add_argument('--db_name', help='Database name', required=False)
+    parser.add_argument('--collection', help='Collection name', required=False)
 
     return parser.parse_args()
 
 
 def is_excel_date_type(cell):
-    if(cell.ctype == 3):
+    if cell.ctype == 3:
         return True
     return False
 
@@ -39,13 +54,13 @@ def get_transactions(workbook, first_sheet):
     for i in range(first_sheet.nrows):
         row = first_sheet.row(i)
         # unpack row to vars ,str each element for json
-        [date, bussiness_name, deal_value, charge_value, more_details] = [
+        [date, business_name, deal_value, charge_value, more_details] = [
             str(element).replace("text", '') for element in row]
-        if(is_excel_date_type(row[0])):
+        if is_excel_date_type(row[0]):
             date = (excel_date_to_datetime(row[0], workbook))
         clean_date = re.sub(r'[^-//0-9]', "", date)
-        curr_deal = {'deal_date ': clean_date, 'bussiness_name': (bussiness_name), 'deal_value': (deal_value), 'charge_value': (charge_value),
-                     'more_details': (more_details)}
+        curr_deal = {'deal_date ': clean_date, 'business_name': business_name, 'deal_value': deal_value, 'charge_value': charge_value,
+                     'more_details': more_details}
         print(curr_deal)
         transactions.append(curr_deal)
     return transactions
@@ -62,6 +77,8 @@ def get_data_from_excel(sheet_name):
 
 def main():
     args = parse_args()
+    function_caller(args)
+    exit(0)
     transactions_arr = get_data_from_excel(args.sheet_name)
 
     print("All tansactions: {0}".format(transactions_arr))
