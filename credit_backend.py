@@ -1,12 +1,9 @@
 import argparse
-import json
 import re
 import xlrd
 
 from datetime import datetime
 from db_handler import db_handler
-from pymongo import MongoClient
-from xlrd.sheet import ctype_text
 
 
 def parse_args():
@@ -78,7 +75,6 @@ def main():
     shop_amount = db.get_shop_and_amount()
 
     print("Shop and amount: {0}".format(shop_amount))
-
 
 
 if __name__ == "__main__":
