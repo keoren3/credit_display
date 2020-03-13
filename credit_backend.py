@@ -44,15 +44,15 @@ def get_transactions(workbook, first_sheet, type):
         # unpack row to vars ,str each element for json
         data = [str(element).replace("text", '') for element in row]
         if type == "isracard":
-            [date, bussiness_name, deal_value, currency1, charge_value, currency2, voucher_number, more_details] = data
+            [date, business_name, deal_value, currency1, charge_value, currency2, voucher_number, more_details] = data
             deal_value += " " + currency1
             charge_value += " " + currency2
         else:
-            [date, bussiness_name, deal_value, charge_value, more_details] = data
+            [date, business_name, deal_value, charge_value, more_details] = data
             if (is_excel_date_type(row[0])):
                 date = (excel_date_to_datetime(row[0], workbook))
         clean_date = re.sub(r'[^-//0-9]', "", date)
-        curr_deal = {'deal_date ': clean_date, 'bussiness_name': (bussiness_name), 'deal_value': (deal_value),
+        curr_deal = {'deal_date ': clean_date, 'bussiness_name': (business_name), 'deal_value': (deal_value),
                      'charge_value': (charge_value),
                      'more_details': (more_details)}
         print(curr_deal)
