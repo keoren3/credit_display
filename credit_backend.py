@@ -52,9 +52,9 @@ def get_transactions(workbook, first_sheet, type):
             if (is_excel_date_type(row[0])):
                 date = (excel_date_to_datetime(row[0], workbook))
         clean_date = re.sub(r'[^-//0-9]', "", date)
-        curr_deal = {'deal_date ': clean_date, 'bussiness_name': (business_name), 'deal_value': (deal_value),
-                     'charge_value': (charge_value),
-                     'more_details': (more_details)}
+        curr_deal = {'deal_date ': clean_date, 'business_name': business_name, 'deal_value': deal_value,
+                     'charge_value': charge_value,
+                     'more_details': more_details}
         print(curr_deal)
         transactions.append(curr_deal)
     return transactions
