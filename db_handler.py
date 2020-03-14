@@ -42,3 +42,12 @@ class db_handler:
         for record in self._collection.find():
             shop_amount_list.append({record['business_name']: record['charge_value']})
         return shop_amount_list
+
+    def update_shop_group(self, shop, group):
+        print("Updating the shop group collection")
+        print("Switching to the shop-group collection")
+        self._shop_group_col = self._db["shop_group_col"]
+        inserted_json = {"shop": shop, "group": group}
+        print("Inserting: {0}".format(inserted_json))
+        self._shop_group_col.insert_one(inserted_json)
+        print("Inserted: {0}".format(inserted_json))

@@ -11,13 +11,13 @@ from db_handler import db_handler
 def parse_args():
     parser = argparse.ArgumentParser(prog="Credit Display", usage="Display credit expanses")
     parser.add_argument('--sheet_name', help='Original excel file from credit card company',
-                        default="credit_expenses.xls", required=False)
+                        default="credit_expenses.xls", required=True)
     parser.add_argument('--db_user', help='User name to connect to database',
-                        required=False)
+                        required=True)
     parser.add_argument('--db_pass', help='Password to connect to database',
-                        required=False)
-    parser.add_argument('--db_name', help='Database name', required=False)
-    parser.add_argument('--collection', help='Collection name', required=False)
+                        required=True)
+    parser.add_argument('--db_name', help='Database name', required=True)
+    parser.add_argument('--collection', help='Collection name', required=True)
 
     return parser.parse_args()
 
@@ -27,7 +27,8 @@ def function_caller(choice):
         'i': 'insert_transactions',
         'rmc': 'remove_collection_from_db',
         'gsa': 'get_shop_and_amount',
-        'gcl': 'get_collections_list'
+        'gcl': 'get_collections_list',
+        'usg': 'update_shop_group'
     }.get(choice, None)
 
 
@@ -36,7 +37,8 @@ def get_parameters(function_name):
         'insert_transactions': 'transactions_arr',
         'remove_collection_from_db': 'col',
         'get_shop_and_amount': '',
-        'get_collections_list': ''
+        'get_collections_list': '',
+        'usg': 'get_input_shop_group'
     }.get(function_name, None)
 
 
@@ -82,14 +84,16 @@ def get_data_from_excel(sheet_name):
 
 def help_print():
     print("Welcome to Credit Display!\nPlease choose what to do:")
-    print("'i' - Inserts transactions from excel to current collection\n'gsa' - Print shop and amount\n"
-          "'rmc' - Remove current collection\n'gcl' - Get a list of all collections in DB")
+    print("'i' - Inserts transactions from excel to current collection\n"
+          "'gsa' - Print shop and amount\n"
+          "'rmc' - Remove current collection\n"
+          "'gcl' - Get a list of all collections in DB\n"
+          "'usg' - Update the shop group collection")
 
 
 def main():
     args = parse_args()
-    if 'collection' in args:
-        col = args.collection
+    col = args.collection
     db = db_handler("mongodb+srv://{0}:{1}@creditdata-xurnm.mongodb.net/test".format(args.db_user, args.db_pass))
     db.connect_to_db(args.db_name)
     db.connect_to_collection(args.collection)
@@ -101,6 +105,11 @@ def main():
         func = function_caller(choice)
         arg = get_parameters(func)
         if func:
+            if func == 'update_shop_group':
+                shop = input("Please enter the shop name\n")
+                group = input("Please enter the group name\n")
+                getattr(db, func)(shop, group)
+                break
             if arg:
                 ans = getattr(db, func)(eval(arg))
             else:
