@@ -36,10 +36,9 @@ class db_handler:
         print("Removing collection")
         drop_check = self._db[collection].drop()
         print("Collection was dropped: {0}".format(drop_check))
-        
 
     def get_shop_and_amount(self):
         shop_amount_list = []
         for record in self._collection.find():
-            shop_amount_list.append({record['bussiness_name']: record['charge_value']})
+            shop_amount_list.append({record['business_name']: record['charge_value']})
         return shop_amount_list
