@@ -1,11 +1,9 @@
 #!/usr/bin/env python3 -u
 
 import argparse
-import re
-import xlrd
 
-from datetime import datetime
 from db_handler import db_handler
+from excel_handler import get_data_from_excel
 
 
 def parse_args():
@@ -42,46 +40,6 @@ def get_parameters(function_name):
         'usg': 'get_input_shop_group',
         'q': '0'
     }.get(function_name, None)
-
-
-def is_excel_date_type(cell):
-    if cell.ctype == 3:
-        return True
-    return False
-
-
-def excel_date_to_datetime(cell, workbook):
-    py_date = datetime(
-        *xlrd.xldate_as_tuple(cell.value, workbook.datemode))
-    # TODO : calculate general year,now only for 2020 s.t = 2020/100 = 20
-    date = "{}/{}/{}".format(py_date.day, py_date.month, int(py_date.year/100))
-    return str(date)
-
-
-def get_transactions(workbook, first_sheet):
-    transactions = list()
-    for i in range(first_sheet.nrows):
-        row = first_sheet.row(i)
-        # unpack row to vars ,str each element for json
-        [date, business_name, deal_value, charge_value, more_details] = [
-            str(element).replace("text", '') for element in row]
-        if is_excel_date_type(row[0]):
-            date = (excel_date_to_datetime(row[0], workbook))
-        clean_date = re.sub(r'[^-//0-9]', "", date)
-        curr_deal = {'deal_date': clean_date, 'business_name': business_name, 'deal_value': deal_value, 'charge_value': charge_value,
-                     'more_details': more_details}
-        print(curr_deal)
-        transactions.append(curr_deal)
-    return transactions
-
-
-def get_data_from_excel(sheet_name):
-    """Gets all transaction from supplied excel sheet"""
-    workbook = xlrd.open_workbook(sheet_name)
-    first_sheet = workbook.sheet_by_index(0)
-    print("First sheet name: '%s'" % first_sheet.name)
-
-    return get_transactions(workbook, first_sheet)
 
 
 def help_print():
