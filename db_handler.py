@@ -51,3 +51,9 @@ class db_handler:
         print("Inserting: {0}".format(inserted_json))
         self._shop_group_col.insert_one(inserted_json)
         print("Inserted: {0}".format(inserted_json))
+
+    def get_spent_by_date(self, spend_date):
+        print("Getting all bought items on date: {0}".format(spend_date))
+        bought_items = self._collection.find({"deal_date": "{0}".format(spend_date)})
+        print("Collected the items.")
+        return bought_items
