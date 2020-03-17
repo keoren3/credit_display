@@ -28,7 +28,8 @@ def function_caller(choice):
         'rmc': 'remove_collection_from_db',
         'gsa': 'get_shop_and_amount',
         'gcl': 'get_collections_list',
-        'usg': 'update_shop_group'
+        'usg': 'update_shop_group',
+        'q': 'exit'
     }.get(choice, None)
 
 
@@ -38,7 +39,8 @@ def get_parameters(function_name):
         'remove_collection_from_db': 'col',
         'get_shop_and_amount': '',
         'get_collections_list': '',
-        'usg': 'get_input_shop_group'
+        'usg': 'get_input_shop_group',
+        'q': '0'
     }.get(function_name, None)
 
 
@@ -66,7 +68,7 @@ def get_transactions(workbook, first_sheet):
         if is_excel_date_type(row[0]):
             date = (excel_date_to_datetime(row[0], workbook))
         clean_date = re.sub(r'[^-//0-9]', "", date)
-        curr_deal = {'deal_date ': clean_date, 'business_name': business_name, 'deal_value': deal_value, 'charge_value': charge_value,
+        curr_deal = {'deal_date': clean_date, 'business_name': business_name, 'deal_value': deal_value, 'charge_value': charge_value,
                      'more_details': more_details}
         print(curr_deal)
         transactions.append(curr_deal)
@@ -88,7 +90,8 @@ def help_print():
           "'gsa' - Print shop and amount\n"
           "'rmc' - Remove current collection\n"
           "'gcl' - Get a list of all collections in DB\n"
-          "'usg' - Update the shop group collection")
+          "'usg' - Update the shop group collection\n"
+          "'q' - Exit the program")
 
 
 def main():
@@ -105,6 +108,8 @@ def main():
         func = function_caller(choice)
         arg = get_parameters(func)
         if func:
+            if func == 'exit':
+                exit(0)
             if func == 'update_shop_group':
                 shop = input("Please enter the shop name\n")
                 group = input("Please enter the group name\n")
