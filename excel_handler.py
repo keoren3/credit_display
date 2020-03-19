@@ -4,31 +4,40 @@ import xlrd
 from xlwt import Workbook
 
 
-def get_data_from_row(row, sheet_type):
+def validate_date(xl_date, date_mode):
+    updated_date = xl_date.value
+    if xl_date.ctype == 3:
+        year, day, month = xlrd.xldate_as_tuple(xl_date.value, date_mode)[:-3]
+        updated_date = "{0}/{1}/{2}".format(day, month, year)
+    elif len(updated_date.split('/')[2]) == 2:
+        wrong_year = updated_date.split('/')[2]
+        correct_year = '20' + wrong_year
+        updated_date = '/'.join(updated_date.split('/')[:-1]) + '/' + correct_year
+    return updated_date
+
+
+def get_data_from_row(row, sheet_type, date_mode):
     print("Checking if a transaction was made in the row: '{0}'".format(row))
-    if sheet_type == 'visa':
-        if '.' in row[2].value:
-            print("A transaction was made! adding it to the database!")
-            date, business_name, deal_value, charge_value, more_details = [cell.value for cell in row]
+    if '.' in str(row[2].value):
+        print("A transaction was made! adding it to the database!")
+        date = validate_date(row[0], date_mode)
+        if sheet_type == 'visa':
+            business_name, deal_value, charge_value, more_details = [cell.value for cell in row[1:]]
+        if sheet_type == 'mastercard':
+            business_name, deal_value, _, charge_value, _, more_details = [cell.value for cell in row[1:-1]]
 
-            return {'deal_date': date, 'business_name': business_name, 'deal_value': deal_value,
-                    'charge_value': charge_value, 'more_details': more_details}
-    if sheet_type == 'mastercard':
-        if row[2].ctype == 2:
-            print("A transaction was made! adding it to the database!")
-            date, business_name, deal_value, _, charge_value, _, more_details, _ = [cell.value for cell in row]
-
-            return {'deal_date': date, 'business_name': business_name, 'deal_value': deal_value,
-                    'charge_value': charge_value, 'more_details': more_details}
+    return {'deal_date': date, 'business_name': business_name, 'deal_value': deal_value,
+            'charge_value': charge_value, 'more_details': more_details}
 
 
-def get_transactions(work_sheet, sheet_type):
+def get_transactions(work_sheet, sheet_type, date_mode):
     transactions = []
     print("Going over all rows in sheet")
 
     for i in range(work_sheet.nrows):
         row = work_sheet.row(i)
-        curr_deal = get_data_from_row(row, sheet_type)
+        curr_deal = get_data_from_row(row, sheet_type, date_mode)
+        validate_date(curr_deal['deal_date'])
 
         if curr_deal:
             print("Adding deal '{0}' to transactions".format(curr_deal))
@@ -74,4 +83,4 @@ def get_data_from_excel(sheet_name):
     sheet_type = get_sheet_type(work_sheet)
     print("First sheet name: '%s'" % work_sheet.name)
 
-    return get_transactions(work_sheet, sheet_type)
+    return get_transactions(work_sheet, sheet_type, workbook.datemode)
