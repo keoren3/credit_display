@@ -18,13 +18,15 @@ def validate_date(xl_date, date_mode):
 
 def get_data_from_row(row, sheet_type, date_mode):
     print("Checking if a transaction was made in the row: '{0}'".format(row))
-    if '.' in str(row[2].value):
-        print("A transaction was made! adding it to the database!")
-        date = validate_date(row[0], date_mode)
-        if sheet_type == 'visa':
-            business_name, deal_value, charge_value, more_details = [cell.value for cell in row[1:]]
-        if sheet_type == 'mastercard':
-            business_name, deal_value, _, charge_value, _, more_details = [cell.value for cell in row[1:-1]]
+    if '.' not in str(row[2].value):
+        print("No transaction was made, continuing...")
+        return None
+
+    date = validate_date(row[0], date_mode)
+    if sheet_type == 'visa':
+        business_name, deal_value, charge_value, more_details = [cell.value for cell in row[1:]]
+    if sheet_type == 'mastercard':
+        business_name, deal_value, _, charge_value, _, more_details = [cell.value for cell in row[1:-1]]
 
     return {'deal_date': date, 'business_name': business_name, 'deal_value': deal_value,
             'charge_value': charge_value, 'more_details': more_details}
@@ -37,7 +39,6 @@ def get_transactions(work_sheet, sheet_type, date_mode):
     for i in range(work_sheet.nrows):
         row = work_sheet.row(i)
         curr_deal = get_data_from_row(row, sheet_type, date_mode)
-        validate_date(curr_deal['deal_date'])
 
         if curr_deal:
             print("Adding deal '{0}' to transactions".format(curr_deal))
