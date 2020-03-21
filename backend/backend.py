@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import Flask, request, flash, redirect
 import os
-from db_handler import db_handler
+from backend.db_handler import db_handler
 from werkzeug.utils import secure_filename
-from credit_backend import get_data_from_excel
+from backend.src.main import get_data_from_excel
 
 UPLOAD_FOLDER = '/uploads'
 ALLOWED_EXTENSIONS = {'xls', 'csv', 'txt'}

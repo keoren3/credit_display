@@ -3,11 +3,33 @@
 import argparse
 import logging
 
-from log_config import set_log_level
-from db_handler import db_handler
-from excel_handler import get_data_from_excel
+from backend.log_config import set_log_level
+from backend.db_handler import db_handler
+from backend.excel_handler import get_data_from_excel
+from flask import Flask, jsonify, request
 
 logger = logging.getLogger(__name__)
+app = Flask(__name__)
+
+
+@app.route('/credit')
+def get_exams():
+    # fetching from the database
+
+    # transforming into JSON-serializable objects
+
+    # serializing as JSON
+    return jsonify({"oren": "yes!"})
+
+
+@app.route('/credit', methods=['POST'])
+def add_exam():
+    # mount exam object
+
+    # persist exam
+
+    # return created exam
+    return jsonify({"oren": "yes!"}), 201
 
 
 def parse_args():
