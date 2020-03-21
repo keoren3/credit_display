@@ -1,13 +1,18 @@
 #!/usr/bin/env python3 -u
 
 import argparse
+import logging
 
+from log_config import set_log_level
 from db_handler import db_handler
 from excel_handler import get_data_from_excel
 
+logger = logging.getLogger(__name__)
+
 
 def parse_args():
-    parser = argparse.ArgumentParser(prog="Credit Display", usage="Display credit expanses")
+    parser = argparse.ArgumentParser(
+        prog="Credit Display", usage="Display credit expanses")
     parser.add_argument('--sheet_name', help='Original excel file from credit card company',
                         default="credit_expenses.xls", required=True)
     parser.add_argument('--db_user', help='User name to connect to database',
@@ -16,7 +21,8 @@ def parse_args():
                         required=True)
     parser.add_argument('--db_name', help='Database name', required=True)
     parser.add_argument('--collection', help='Collection name', required=True)
-
+    parser.add_argument('--log_level', default='INFO', choices=('debug', 'info', 'warning', 'error', 'critical'),
+                        help='Level of logging', required=False)
     return parser.parse_args()
 
 
@@ -54,8 +60,10 @@ def help_print():
 
 def main():
     args = parse_args()
+    set_log_level(args.log_level)
     col = args.collection
-    db = db_handler("mongodb+srv://{0}:{1}@creditdata-xurnm.mongodb.net/test".format(args.db_user, args.db_pass))
+    db = db_handler(
+        "mongodb+srv://{0}:{1}@creditdata-xurnm.mongodb.net/test".format(args.db_user, args.db_pass))
     db.connect_to_db(args.db_name)
     db.connect_to_collection(args.collection)
     transactions_arr = get_data_from_excel(args.sheet_name)
@@ -78,9 +86,11 @@ def main():
             else:
                 ans = getattr(db, func)()
 
-            print("Function {0} parameters: {1}, Returned:\n{2}".format(func, arg, ans))
+            logger.info("Function {0} parameters: {1}, Returned:\n{2}".format(
+                func, arg, ans))
         else:
-            print("Function not found!")
+
+            logger.info("Function not found!")
 
 
 if __name__ == "__main__":
