@@ -3,8 +3,11 @@
 import argparse
 import logging
 
+from log_config import set_log_level
 from db_handler import db_handler
 from excel_handler import get_data_from_excel
+
+logger = logging.getLogger(__name__)
 
 
 def parse_args():
@@ -55,14 +58,6 @@ def help_print():
           "'q' - Exit the program")
 
 
-def set_log_level(loglevel):
-    numeric_level = getattr(logging, loglevel.upper(), None)
-    if not isinstance(numeric_level, int):
-        raise ValueError('Invalid log level: %s' % loglevel)
-    logging.basicConfig(
-        level=numeric_level, format='%(asctime)s :: %(name)s :: %(levelname)s :: %(funcName)s :: %(message)s', datefmt='[%d/%m/%Y %H:%M:%S]')
-
-
 def main():
     args = parse_args()
     set_log_level(args.log_level)
@@ -91,11 +86,11 @@ def main():
             else:
                 ans = getattr(db, func)()
 
-            print("Function {0} parameters: {1}, Returned:\n{2}".format(
+            logger.info("Function {0} parameters: {1}, Returned:\n{2}".format(
                 func, arg, ans))
         else:
 
-            print("Function not found!")
+            logger.info("Function not found!")
 
 
 if __name__ == "__main__":
