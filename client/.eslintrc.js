@@ -14,6 +14,7 @@ module.exports = {
         "vue"
     ],
     "rules": {
-        "quotes": [2, "double", { "avoidEscape": true }]
+        "quotes": [2, "double", { "avoidEscape": true }],
+        "linebreak-style" :"off"
     }
 };
