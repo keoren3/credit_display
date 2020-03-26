@@ -1,12 +1,16 @@
 <template>
-  <div>
-    <h1>Wellcome to credit Display</h1>
-    <router-link
-      to="upload"
-      tag="button"
-    >
-      Click to upload your exel shit
-    </router-link>
+  <div id="mainbar">
+    <h1>Wellcome to Credit Display</h1>
+    <v-row align="center">
+      <v-col
+        align-self="center"
+        cols="12"
+      >
+        <v-btn to="/upload">
+          Click here to upload exel shit
+        </v-btn>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -23,20 +27,16 @@ export default {
 
 
 <style scoped>
+
 h1 {
   text-align: center;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
+
 a {
   display: flex;
-  align-items: center;
   color: #42b983;
+}
+.router-link-exact-active{
+    align-items: center;
 }
 </style>
