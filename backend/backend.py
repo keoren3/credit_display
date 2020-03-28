@@ -1,11 +1,9 @@
 import os
 import uuid
 
-from flask import Flask, flash, redirect, render_template, request, url_for, jsonify
+from flask import Flask, flash, redirect, request, url_for, jsonify
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
-from credit_backend import get_data_from_excel
-from db_handler import db_handler
 
 ALLOWED_EXTENSIONS = {'xls', 'csv', 'txt'}
 

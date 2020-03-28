@@ -3,9 +3,9 @@
 import argparse
 import logging
 
-from log_config import set_log_level
-from db_handler import db_handler
-from excel_handler import get_data_from_excel
+from backend.log_config import set_log_level
+from backend.db_handler import db_handler
+from backend.excel_handler import get_data_from_excel
 
 logger = logging.getLogger(__name__)
 
