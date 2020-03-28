@@ -1,27 +1,51 @@
 <template>
   <div id="mainbar">
-    <h1>Wellcome to Credit Display</h1>
+    <h1>Welcome to Credit Display</h1>
     <v-row align="center">
       <v-col
         align-self="center"
         cols="12"
       >
         <v-btn to="/upload">
-          Click here to upload exel shit
+          Click here to upload an Excel sheet
         </v-btn>
       </v-col>
     </v-row>
+    <pie-chart
+      :data="chartData"
+      :options="chartOptions"
+    >
+    </pie-chart>
   </div>
 </template>
 
 <script>
+import PieChart from "./PieChart";
+
 export default {
   name: "MainPage",
+  components: {
+    PieChart
+  },
   data() {
     return {
-      msg: "",
+      chartOptions: {
+        hoverBorderWidth: 20
+      },
+      chartData: {
+        hoverBackgroundColor: "red",
+        hoverBorderWidth: 10,
+        labels: ["Green", "Red", "Blue"],
+        datasets: [
+          {
+            label: "Data One",
+            backgroundColor: ["#41B883", "#E46651", "#00D8FF"],
+            data: [1, 10, 5]
+          }
+        ]
+      }
     };
-  },
+  }
 };
 </script>
 

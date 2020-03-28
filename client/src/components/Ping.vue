@@ -1,6 +1,9 @@
 <template>
   <div class="container">
-    <button type="button" class="btn btn-primary">
+    <button
+      type="button"
+      class="btn btn-primary"
+    >
       {{ msg }}
     </button>
   </div>
@@ -16,6 +19,9 @@ export default {
       msg: "",
     };
   },
+  created() {
+    this.getMessage();
+  },
   methods: {
     getMessage() {
       const path = "http://localhost:5000/ping";
@@ -29,9 +35,6 @@ export default {
           console.error(error);
         });
     },
-  },
-  created() {
-    this.getMessage();
   },
 };
 </script>
