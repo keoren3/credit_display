@@ -14,7 +14,7 @@ export default {
       chartData: {
         hoverBackgroundColor: "red",
         hoverBorderWidth: "10px",
-        labels: ["Green", "Red", "Blue"],
+        // labels: ["Green", "Red", "Blue"],
         datasets: [
           {
             label: "Data One",

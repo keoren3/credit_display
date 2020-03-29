@@ -32,7 +32,7 @@ h1 {
 }
 
 a {
-  display: flex;
+  /* display: flex; */
   color: #42b983;
 }
 .router-link-exact-active {
