@@ -1,13 +1,4 @@
-__pycache__/db_handler.cpython-37.pyc
-__pycache__/excel_handler.cpython-37.pyc
+.idea
+__pycache__
+uploads
 node_modules
-.vscode/launch.json
-.vscode/settings.json
-__pycache__/backend.cpython-37.pyc
-__pycache__/credit_backend.cpython-37.pyc
-__pycache__/db_handler.cpython-36.pyc
-__pycache__/log_config.cpython-37.pyc
-{
-uploads/ed2949fb-e908-47b0-9a46-715fee9e09bb.xls
-uploads/cbf58f7b-fba3-4738-9dc4-f90d4bff5d81.xls
-~$Transactions_19_02_2020.xlsx
