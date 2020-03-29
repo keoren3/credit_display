@@ -11,38 +11,15 @@
         </v-btn>
       </v-col>
     </v-row>
-    <pie-chart
-      :data="chartData"
-      :options="chartOptions"
-    />
   </div>
 </template>
 
 <script>
-import PieChart from "./PieChart";
-
 export default {
   name: "MainPage",
-  components: {
-    PieChart,
-  },
   data() {
     return {
-      chartOptions: {
-        hoverBorderWidth: 20,
-      },
-      chartData: {
-        hoverBackgroundColor: "red",
-        hoverBorderWidth: 10,
-        labels: ["Green", "Red", "Blue"],
-        datasets: [
-          {
-            label: "Data One",
-            backgroundColor: ["#41B883", "#E46651", "#00D8FF"],
-            data: [1, 10, 5],
-          },
-        ],
-      },
+      msg: " ",
     };
   },
 };
@@ -50,7 +27,6 @@ export default {
 
 
 <style scoped>
-
 h1 {
   text-align: center;
 }
@@ -59,7 +35,7 @@ a {
   display: flex;
   color: #42b983;
 }
-.router-link-exact-active{
-    align-items: center;
+.router-link-exact-active {
+  align-items: center;
 }
 </style>
