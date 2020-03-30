@@ -18,13 +18,6 @@
       class="collapse navbar-collapse"
     >
       <div class="navbar-nav">
-        <!-- <a
-          class="nav-item nav-link"
-          href="page1.html"
-        >Register</a> -->
-        <!-- <router-link to="/register">
-          Register
-        </router-link> -->
         <v-btn to="/register">
           Register
         </v-btn>
