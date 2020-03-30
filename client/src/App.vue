@@ -1,20 +1,19 @@
 <template>
   <div id="app">
+    <NavBar />
     <router-view />
-    <PieChart
-      width="100px"
-      height="20px"
-    />
   </div>
 </template>
 
 <script>
-import PieChart from "./components/PieChart.vue";
+// import PieChart from "./components/PieChart.vue";
+import NavBar from "./components/NavBar.vue";
 
 export default {
   name: "App",
   components: {
-    PieChart,
+    NavBar,
+    // PieChart,
   },
 };
 </script>
