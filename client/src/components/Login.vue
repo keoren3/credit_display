@@ -27,6 +27,7 @@
               <v-card-text>
                 <v-form>
                   <v-text-field
+                    v-model="user_name"
                     label="Login"
                     name="login"
                     prepend-icon="person"
@@ -60,6 +61,17 @@
 export default {
   props: {
     source: String,
+  },
+  data() {
+    return {
+      user_name: "",
+      password: "",
+    };
+  },
+  watch: {
+    user_name(newUsername, oldUsername) {
+      console.log(`User name was ${oldUsername} Now user name is ${newUsername}`);
+    },
   },
 };
 </script>

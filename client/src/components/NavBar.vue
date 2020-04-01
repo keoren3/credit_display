@@ -1,9 +1,11 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a
+    <router-link
       class="navbar-brand"
-      href="localhost:8080"
-    >Credit Display Web</a>
+      to="/"
+    >
+      Credit Display Web
+    </router-link>
     <button
       class="navbar-toggler"
       type="button"
