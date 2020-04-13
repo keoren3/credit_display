@@ -8,7 +8,7 @@ import Login from "../components/Login.vue";
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: "history",
   base: process.env.BASE_URL,
   routes: [
@@ -37,5 +37,18 @@ export default new Router({
       name: "Upload",
       component: Upload,
     },
+    { path: "*", redirect: "/" },
   ],
+});
+
+export default router;
+
+router.beforeEach((to, from, next) => {
+  const publicPages = ["/login", "/register"];
+  const authRequired = !publicPages.includes(to.path);
+  const loggedIn = localStorage.getItem("user");
+  if (authRequired && !loggedIn) {
+    return next("/login");
+  }
+  next();
 });
