@@ -61,6 +61,9 @@ class db_handler:
             shop_amount_list.append(
                 {record['business_name']: record['charge_value']})
         return shop_amount_list
+    
+    def insert(self,o):
+        self._collection.insert_one(o)
 
     def update_shop_group(self, shop, group):
         logger.info("Updating the shop group collection")

@@ -1,16 +1,21 @@
 import os
 import uuid
 
+from db_handler import db_handler
 from flask import Flask, flash, redirect, request, url_for, jsonify
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
+
 
 ALLOWED_EXTENSIONS = {'xls', 'csv', 'txt'}
 
 DEBUG = True
 
 app = Flask(__name__)
-app.config.from_object(__name__)
+db = db_handler("mongodb+srv://rohiz:r2u4g6h8@creditdata-xurnm.mongodb.net/test")
+db.connect_to_db("rohi_db")
+db.connect_to_collection("users")
+
 
 # enable CORS
 CORS(app, resources={r'/*': {'origins': '*'}})
@@ -34,6 +39,14 @@ def allowed_file(filename):
 @app.route('/')
 def hello():
     return "Hello World!"
+
+@app.route('/register',methods=['POST'])
+def register():
+    user_name = request.get_json()['user_name']
+    password = request.get_json()['password']
+    db.insert({'user_test': user_name,'user_password_test':password})
+    return 'Success'
+
 
 
 @app.route('/result_success', methods=['GET'])

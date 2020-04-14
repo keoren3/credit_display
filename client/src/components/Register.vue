@@ -46,8 +46,11 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer />
-                <v-btn color="primary">
-                  Login
+                <v-btn
+                  color="primary"
+                  @click="register"
+                >
+                  Register
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -59,6 +62,8 @@
 </template>
 
 <script>
+import Axios from "axios";
+
 export default {
   data() {
     return {
@@ -66,6 +71,18 @@ export default {
       password: "",
       passwordConfirm: "",
     };
+  },
+  methods: {
+    register() {
+      const { userName, password } = this;
+      Axios.post("http://localhost:5000/register",
+        { user_name: userName, password })
+        .then(() => {
+          this.$router.push({ name: "Login" });
+        }).catch((err) => {
+          console.log(err);
+        });
+    },
   },
 };
 </script>
