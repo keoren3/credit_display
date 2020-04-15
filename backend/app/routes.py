@@ -1,8 +1,8 @@
 
 import uuid
-from app import app
+import os
+from app import back_app
 
-from app import db_handler
 from flask import Flask, flash, redirect, request, url_for, jsonify
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
@@ -11,18 +11,19 @@ from flask_pymongo import PyMongo
 
 ALLOWED_EXTENSIONS = {'xls', 'csv', 'txt'}
 
-DEBUG = True
+
+
 
 
 
 # enable CORS
-CORS(app, resources={r'/*': {'origins': '*'}})
+# CORS(app, resources={r'/*': {'origins': '*'}})
+mongo = PyMongo(back_app)
 
 
-
-@app.route('/ping', methods=['GET'])
+@back_app.route('/ping', methods=['GET'])
 def ping_pong():
-    return jsonify('pong!')
+    return jsonify('Pong!')
 
 
 def allowed_file(filename):
@@ -30,30 +31,32 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route('/')
+@back_app.route('/')
 def hello():
-    return "Hello World!"
+    return "Hey EveryOne!"
 
-@app.route('/register',methods=['POST'])
+@back_app.route('/register',methods=['POST'])
 def register():
+    users = mongo.db.users
     user_name = request.get_json()['user_name']
     password = request.get_json()['password']
-    # db.insert({'user_test': user_name,'user_password_test':password})
+    users.insert({'user_test': user_name,'user_password_test':password})
     return 'Success'
 
 
 
-@app.route('/result_success', methods=['GET'])
+
+@back_app.route('/result_success', methods=['GET'])
 def result_s():
-    return "File Uploaded Successfully"
+    return "File Uploaded Success"
 
 
-@app.route('/result_failed', methods=['GET'])
+@back_app.route('/result_failed', methods=['GET'])
 def result_f():
     return "File Uploaded Fail"
 
 
-@app.route('/upload', methods=['GET', 'POST'])
+@back_app.route('/upload', methods=['GET', 'POST'])
 def uploadFile():
     response_object = {'status': 'success'}
     if request.method == 'POST':
@@ -76,8 +79,8 @@ def uploadFile():
     return jsonify(response_object)
 
 
-if __name__ == '__main__':
-    # db = db_handler(
-    #     "mongodb+srv://imridb:imri123!@creditdata-xurnm.mongodb.net/test")
-    # db.connect_to_db("t")
-    app.run()
+# if __name__ == '__main__':
+#     # db = db_handler(
+#     #     "mongodb+srv://imridb:imri123!@creditdata-xurnm.mongodb.net/test")
+#     # db.connect_to_db("t")
+#     app.run()
