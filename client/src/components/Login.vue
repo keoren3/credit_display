@@ -27,7 +27,8 @@
               <v-card-text>
                 <v-form>
                   <v-text-field
-                    v-model="user_name"
+                    id="user_name"
+                    v-model.lazy="userName"
                     label="Login"
                     name="login"
                     prepend-icon="person"
@@ -36,6 +37,7 @@
 
                   <v-text-field
                     id="password"
+                    v-model.lazy="password"
                     label="Password"
                     name="password"
                     prepend-icon="lock"
@@ -45,7 +47,10 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer />
-                <v-btn color="primary">
+                <v-btn
+                  color="primary"
+                  @click="login"
+                >
                   Login
                 </v-btn>
               </v-card-actions>
@@ -58,16 +63,26 @@
 </template>
 
 <script>
+import Axios from "axios";
+
 export default {
   data() {
     return {
-      user_name: "",
+      userName: "",
       password: "",
     };
   },
-  watch: {
-    user_name(newUsername, oldUsername) {
-      console.log(`User name was ${oldUsername} Now user name is ${newUsername}`);
+  methods: {
+    login() {
+      const { userName, password } = this;
+      Axios.post("http://localhost:5000/login",
+        { user_name: userName, password })
+        .then((res) => {
+          console.log(res);
+          console.log(res.data.result);
+        }).catch((err) => {
+          console.log(err);
+        });
     },
   },
 };

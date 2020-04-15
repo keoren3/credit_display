@@ -48,8 +48,8 @@ def login():
     users = mongo.db.users
     user_name = request.get_json()['user_name']
     password = request.get_json()['password']
-    
-    response = users.find_one({'user_name':user_name})
+    print(user_name , password)
+    response = users.find_one({'user_name':user_name}   )
     if response:
         if password == response['password']:
             return jsonify({'result':'success'})
