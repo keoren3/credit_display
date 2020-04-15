@@ -40,8 +40,22 @@ def register():
     users = mongo.db.users
     user_name = request.get_json()['user_name']
     password = request.get_json()['password']
-    users.insert({'user_test': user_name,'user_password_test':password})
+    users.insert({'user_name': user_name,'password':password})
     return 'Success'
+
+@back_app.route('/login',methods=['POST'])
+def login():
+    users = mongo.db.users
+    user_name = request.get_json()['user_name']
+    password = request.get_json()['password']
+    
+    response = users.find_one({'user_name':user_name})
+    if response:
+        if password == response['password']:
+            return jsonify({'result':'success'})
+        else:
+            return jsonify({'result':'failed'})
+    return 'User client to login '
 
 
 
