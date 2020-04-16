@@ -5,20 +5,9 @@ from app import back_app
 
 from flask import Flask, flash, redirect, request, url_for, jsonify
 from werkzeug.utils import secure_filename
-from flask_cors import CORS
-from flask_pymongo import PyMongo
 
 
 ALLOWED_EXTENSIONS = {'xls', 'csv', 'txt'}
-
-
-
-
-
-
-# enable CORS
-# CORS(app, resources={r'/*': {'origins': '*'}})
-mongo = PyMongo(back_app)
 
 
 @back_app.route('/ping', methods=['GET'])
@@ -34,30 +23,6 @@ def allowed_file(filename):
 @back_app.route('/')
 def hello():
     return "Hey EveryOne!"
-
-@back_app.route('/register',methods=['POST'])
-def register():
-    users = mongo.db.users
-    user_name = request.get_json()['user_name']
-    password = request.get_json()['password']
-    users.insert({'user_name': user_name,'password':password})
-    return 'Success'
-
-@back_app.route('/login',methods=['POST'])
-def login():
-    users = mongo.db.users
-    user_name = request.get_json()['user_name']
-    password = request.get_json()['password']
-    print(user_name , password)
-    response = users.find_one({'user_name':user_name}   )
-    if response:
-        if password == response['password']:
-            return jsonify({'result':'success'})
-        else:
-            return jsonify({'result':'failed'})
-    return 'User client to login '
-
-
 
 
 @back_app.route('/result_success', methods=['GET'])
