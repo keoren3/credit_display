@@ -1,22 +1,37 @@
 <template>
   <div id="mainbar">
-    <h1>Welcome to Credit Display</h1>
-    <v-row align="center">
-      <v-col
-        align-self="center"
-        cols="12"
-      >
-        <v-btn to="/upload">
+    <div>
+      <h1>Welcome to Credit Display</h1>
+      <v-row align="center">
+        <v-col
+          align-self="center"
+          cols="12"
+        >
+        <!-- <v-btn to="/upload">
           Click here to upload an Excel sheet
-        </v-btn>
-      </v-col>
-    </v-row>
+        </v-btn> -->
+        </v-col>
+      </v-row>
+    </div>
+    <div>
+      <PieChart
+        width="100px"
+        height="20px"
+      />
+    </div>
   </div>
 </template>
 
 <script>
+import PieChart from "./PieChart.vue";
+
 export default {
+
+
   name: "MainPage",
+  components: {
+    PieChart,
+  },
   data() {
     return {
       msg: " ",

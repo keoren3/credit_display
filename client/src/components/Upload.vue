@@ -9,7 +9,10 @@
           @change="handleFileUpload()"
         >
       </label>
-      <button @click="submitFile()">
+      <button
+        class="btn btn-primary"
+        @click="submitFile()"
+      >
         Submit
       </button>
     </div>
