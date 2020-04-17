@@ -4,7 +4,7 @@ from config import Config
 from flask_pymongo import PyMongo
 from flask_bcrypt import Bcrypt 
 from flask_jwt_extended import JWTManager
-from flask_jwt_extended import create_access_token
+
 
 back_app = Flask(__name__)
 back_app.config.from_object(Config)

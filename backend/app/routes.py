@@ -24,17 +24,6 @@ def allowed_file(filename):
 def hello():
     return "Hey EveryOne!"
 
-
-@back_app.route('/result_success', methods=['GET'])
-def result_s():
-    return "File Uploaded Success"
-
-
-@back_app.route('/result_failed', methods=['GET'])
-def result_f():
-    return "File Uploaded Fail"
-
-
 @back_app.route('/upload', methods=['GET', 'POST'])
 def uploadFile():
     response_object = {'status': 'success'}
@@ -54,7 +43,7 @@ def uploadFile():
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], newFileName))
         response_object['message'] = 'File added'
         # print("finish save file")
-        return redirect(url_for('result_s'))
+        return "Upload successfuly"
     return jsonify(response_object)
 
 

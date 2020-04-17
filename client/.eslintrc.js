@@ -17,5 +17,6 @@ module.exports = {
     quotes: [2, "double", { avoidEscape: true }],
     "linebreak-style": "off",
     "no-console": "off",
+    "no-underscore-dangle": "off"
   },
 };

@@ -26,16 +26,51 @@
         <v-btn to="/login">
           Login
         </v-btn>
-        <v-btn to="/upload">
+        <v-btn
+          v-if="isAuthenticated"
+          to="/upload"
+        >
           Upload
         </v-btn>
+        <div class="navbar-nav mr-auto">
+          <v-btn
+            v-if="isAuthenticated"
+            @click="logout"
+          >
+            Logout
+          </v-btn>
+        </div>
       </div>
     </div>
   </nav>
 </template>
 
 <script>
+import { mapGetters, mapState } from "vuex";
+import { AUTH_LOGOUT } from "../store/actions/auth";
+
 export default {
   Main: "NavBar",
+
+  computed: {
+    ...mapGetters(["getProfile", "isAuthenticated", "isProfileLoaded"]),
+    ...mapState({
+      authLoading: (state) => state.auth.status === "loading",
+    }),
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch(AUTH_LOGOUT)
+        .then(() => {
+          this.$router.push({ name: "MainPage" });
+        });
+    },
+  },
 };
 </script>
+
+<style scoped>
+.topnav-right {
+  float: right;
+}
+</style>

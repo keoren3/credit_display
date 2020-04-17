@@ -5,8 +5,24 @@ import Upload from "../components/Upload.vue";
 import MainPage from "../components/MainPage.vue";
 import Register from "../components/Register.vue";
 import Login from "../components/Login.vue";
+// import store from "../store";
 
 Vue.use(Router);
+// const ifNotAuthenticated = (to, from, next) => {
+//   if (store.getters.isAuthenticated) {
+//     next();
+//     return;
+//   }
+//   next("/");
+// };
+
+// const ifAuthenticated = (to, from, next) => {
+//   if (this.$store.getters.isAuthenticated) {
+//     next();
+//     return;
+//   }
+//   next("/login");
+// };
 
 const router = new Router({
   mode: "history",
@@ -21,6 +37,7 @@ const router = new Router({
       path: "/login",
       name: "Login",
       component: Login,
+      // beforeEnter: ifNotAuthenticated,
     },
     {
       path: "/register",
@@ -50,4 +67,8 @@ export default router;
 //   if (authRequired && !loggedIn) {
 //     next("/login");
 //   } else { next(); }
+// });
+
+// router.beforeEach((to, from, next) => {
+//   clg(store.state);
 // });

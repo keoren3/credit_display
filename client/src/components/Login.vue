@@ -1,3 +1,4 @@
+
 <template>
   <v-app id="inspire">
     <v-content>
@@ -63,7 +64,7 @@
 </template>
 
 <script>
-import Axios from "axios";
+import { AUTH_REQUEST } from "../store/actions/auth";
 
 export default {
   data() {
@@ -75,12 +76,12 @@ export default {
   methods: {
     login() {
       const { userName, password } = this;
-      Axios.post("http://localhost:5000/login",
-        { user_name: userName, password })
-        .then((res) => {
-          console.log(res);
-          console.log(res.data.result);
-        }).catch((err) => {
+      this.$store.dispatch(AUTH_REQUEST, { user_name: userName, password })
+        .then(() => {
+          console.log("this callback call now");
+          this.$router.push("/");
+        })
+        .catch((err) => {
           console.log(err);
         });
     },
