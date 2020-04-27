@@ -78,7 +78,6 @@ export default {
       const { userName, password } = this;
       this.$store.dispatch(AUTH_REQUEST, { user_name: userName, password })
         .then(() => {
-          console.log("this callback call now");
           this.$router.push("/");
         })
         .catch((err) => {

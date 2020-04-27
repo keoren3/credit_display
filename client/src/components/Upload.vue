@@ -57,8 +57,8 @@ export default {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }).then(() => {
-        console.log("SUCCESS!!");
+        }).then((res) => {
+        console.log(res.data);
       })
         .catch(() => {
           console.log("FAILURE!!");

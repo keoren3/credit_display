@@ -29,9 +29,8 @@ const actions = {
         const { token } = response.data;
         localStorage.setItem("user-token", token);
         console.log(localStorage);
-        Axios.defaults.headers.common.Authorization = token;
+        Axios.defaults.headers.common.Authorization = `Bearer ${token}`;
         commit(AUTH_SUCCESS, token);
-        console.log("Got here");
         res(response);
       }).catch((err) => {
         commit(AUTH_ERROR, err);
