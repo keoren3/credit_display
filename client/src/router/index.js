@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Ping from "../components/Ping.vue";
 import Upload from "../components/Upload.vue";
 import MainPage from "../components/MainPage.vue";
 import Register from "../components/Register.vue";
@@ -43,11 +42,6 @@ const router = new Router({
       path: "/register",
       name: "Register",
       component: Register,
-    },
-    {
-      path: "/ping",
-      name: "Ping",
-      component: Ping,
     },
     {
       path: "/upload",

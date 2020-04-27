@@ -10,11 +10,6 @@ from werkzeug.utils import secure_filename
 ALLOWED_EXTENSIONS = {'xls', 'csv', 'txt'}
 
 
-@back_app.route('/ping', methods=['GET'])
-def ping_pong():
-    return jsonify('Pong!')
-
-
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -23,6 +18,7 @@ def allowed_file(filename):
 @back_app.route('/')
 def hello():
     return "Hey EveryOne!"
+
 
 @back_app.route('/upload', methods=['GET', 'POST'])
 def uploadFile():
