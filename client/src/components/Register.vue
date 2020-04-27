@@ -77,8 +77,7 @@ export default {
       const { userName, password } = this;
       Axios.post("http://localhost:5000/register",
         { user_name: userName, password })
-        .then((res) => {
-          console.log(res.data);
+        .then(() => {
           this.$router.push({ name: "Login" });
         }).catch((err) => {
           console.log(err);
