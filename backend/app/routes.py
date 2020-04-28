@@ -25,8 +25,7 @@ def uploadFile():
     if request.method == 'POST':
         file = request.files['file']
         if 'file' not in request.files:
-            flash('No file part')
-            return redirect(url_for('result_f'))
+            return jsonify(response_object)
         file = request.files['file']
         t_dir = tempfile.TemporaryDirectory()
         path = os.path.join(t_dir.name, file.filename)
@@ -34,11 +33,10 @@ def uploadFile():
 
         transactions = get_data_from_excel(path)
         user = User.objects(user_name=current_user).first()
-        print(user)
         user.set_transactions(transactions)
         user.save()
         # print("finish save file")
-        return "Upload successfuly"
+        return jsonify({'status': 'success'})
     return jsonify(response_object)
 
 
