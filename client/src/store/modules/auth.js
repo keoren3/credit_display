@@ -25,10 +25,8 @@ const actions = {
     console.log(user);
     Axios.post("http://127.0.0.1:5000/login", user)
       .then((response) => {
-        console.log(response.data);
         const { token } = response.data;
         localStorage.setItem("user-token", token);
-        console.log(localStorage);
         Axios.defaults.headers.common.Authorization = `Bearer ${token}`;
         commit(AUTH_SUCCESS, token);
         res(response);

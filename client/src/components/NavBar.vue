@@ -32,9 +32,10 @@
         >
           Upload
         </v-btn>
-        <div class="navbar-nav mr-auto">
+        <div class=" navnavbar-nav mr-auto">
           <v-btn
             v-if="isAuthenticated"
+            class="navbar-right "
             @click="logout"
           >
             Logout

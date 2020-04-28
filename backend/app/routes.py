@@ -1,11 +1,12 @@
 
 import uuid
 import os
-
+import tempfile
 from flask import Blueprint, flash, redirect, request, url_for, jsonify
 from werkzeug.utils import secure_filename
 from flask_jwt_extended import get_jwt_identity, jwt_required
-
+from app.excel_handler import get_data_from_excel
+from app.models import User
 file_handler = Blueprint('file_handler', __name__)
 
 ALLOWED_EXTENSIONS = {'xls', 'csv', 'txt'}
@@ -19,26 +20,23 @@ def allowed_file(filename):
 @file_handler.route('/upload', methods=['GET', 'POST'])
 @jwt_required
 def uploadFile():
-    response_object = {'status': 'success'}
+    current_user = get_jwt_identity()
+    response_object = {'status': 'failed'}
     if request.method == 'POST':
-        current_user = get_jwt_identity()
-        return jsonify(logged_in_as=current_user), 200
-    #    if 'file' not in request.files:
-    #         flash('No file part')
-    #         return redirect(url_for('result_f'))
-    #     file = request.files['file']
-    #     filename = secure_filename(file.filename)
+        file = request.files['file']
+        if 'file' not in request.files:
+            return jsonify(response_object)
+        file = request.files['file']
+        t_dir = tempfile.TemporaryDirectory()
+        path = os.path.join(t_dir.name, file.filename)
+        file.save(path)
 
-    #     # Gen GUUID File Name
-    #     fileExt = filename.split('.')[1]
-    #     autoGenFileName = uuid.uuid4()
-
-    #     newFileName = str(autoGenFileName) + '.' + fileExt
-
-    #     file.save(os.path.join(app.config['UPLOAD_FOLDER'], newFileName))
-    #     response_object['message'] = 'File added'
-    #     # print("finish save file")
-    #     return "Upload successfuly"
+        transactions = get_data_from_excel(path)
+        user = User.objects(user_name=current_user).first()
+        user.set_transactions(transactions)
+        user.save()
+        # print("finish save file")
+        return jsonify({'status': 'success'})
     return jsonify(response_object)
 
 
