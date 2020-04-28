@@ -34,7 +34,6 @@ def uploadFile():
 
         transactions = get_data_from_excel(path)
         user = User.objects(user_name=current_user).first()
-        print(user)
         user.set_transactions(transactions)
         user.save()
         # print("finish save file")
