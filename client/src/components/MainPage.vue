@@ -7,7 +7,7 @@
           align-self="center"
           cols="12"
         >
-        <!-- <v-btn to="/upload">
+          <!-- <v-btn to="/upload">
           Click here to upload an Excel sheet
         </v-btn> -->
         </v-col>
@@ -32,7 +32,7 @@ export default {
   components: {
     PieChart,
   },
-  data() {
+  data () {
     return {
       msg: " ",
     };

@@ -1,8 +1,10 @@
 <template>
-  <div id="app">
+  <v-app id="inspire">
     <NavBar />
-    <router-view />
-  </div>
+    <v-content class="grey lighten-4">
+      <router-view />
+    </v-content>
+  </v-app>
 </template>
 
 <script>
@@ -17,12 +19,12 @@ export default {
     NavBar,
     // PieChart,
   },
-  created() {
+  created () {
     axios.interceptors.response.use(undefined, (err) => new Promise(() => {
       if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
-      // if you ever get an unauthorized, logout the user
+        // if you ever get an unauthorized, logout the user
         this.$store.dispatch(AUTH_LOGOUT);
-      // you can also redirect to /login if needed !
+        // you can also redirect to /login if needed !
       }
       throw err;
     }));
