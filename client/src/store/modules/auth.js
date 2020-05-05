@@ -1,7 +1,8 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-param-reassign */
 
-import Axios from "axios";
+import axios from "axios";
+import Cookies from "js-cookie";
 import {
   AUTH_REQUEST,
   AUTH_ERROR,
@@ -23,11 +24,12 @@ const actions = {
   [AUTH_REQUEST]: ({ commit }, user) => new Promise((res, rej) => {
     commit(AUTH_REQUEST);
     console.log(user);
-    Axios.post("http://127.0.0.1:5000/login", user)
+    axios.post("http://127.0.0.1:5000/login", user)
       .then((response) => {
         const { token } = response.data;
         localStorage.setItem("user-token", token);
-        Axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+        Cookies.set("token", `Bearer ${token}`);
         commit(AUTH_SUCCESS, token);
         res(response);
       }).catch((err) => {
@@ -39,7 +41,7 @@ const actions = {
   [AUTH_LOGOUT]: ({ commit }) => new Promise((resolve) => {
     commit(AUTH_LOGOUT);
     localStorage.removeItem("user-token");
-    delete Axios.defaults.headers.common.Authorization;
+    delete axios.defaults.headers.common.Authorization;
     resolve();
   }),
 };
