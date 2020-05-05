@@ -90,12 +90,14 @@ export default {
     return {
       drawer: false,
       links: {
-        auth: this.$store.getters.isAuthenticated,
+
         arr: [
           { icon: "mdi-view-dashboard", text: "Dashboard", route: "/" },
           { icon: "mdi-login", text: "Login", route: "/login" },
           { icon: "mdi-account", text: "Register", route: "/register" },
-          { icon: "mdi-account-group", text: "Team", route: "/team" }
+          { icon: "mdi-file-upload", text: "Upload", route: "/upload" },
+          { icon: "mdi-credit-card", text: "Transactions", route: "/transactions" },
+          { icon: "mdi-account-group", text: "Team", route: "/team" },
         ]
       }
     };
@@ -106,8 +108,8 @@ export default {
       authLoading: (state) => state.auth.status === "loading",
     }),
     linksFilter () {
-      if (!this.links.auth) { return this.links.arr; }
-      return this.links.arr.filter((link) => link.text !== "Login" && link.text !== "Register");
+      if (this.$store.getters.isAuthenticated) { return this.links.arr.filter((link) => link.text !== "Login" && link.text !== "Register"); }
+      return this.links.arr.filter((link) => link.text === "Login" || link.text === "Register");
     }
   },
   methods: {

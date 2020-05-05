@@ -39,6 +39,14 @@ def uploadFile():
         return jsonify({'status': 'success'})
     return jsonify(response_object)
 
+@file_handler.route('/transactions', methods=['GET', 'POST'])
+@jwt_required
+def getTrans():
+    current_user = get_jwt_identity()
+    user = User.objects(user_name=current_user).first()
+    trans = user.transactions
+    return jsonify({'status': 'success' ,'trans' : trans})
+
 
 # if __name__ == '__main__':
 #     # db = db_handler(
