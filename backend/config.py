@@ -12,6 +12,6 @@ class Config(object):
         'host': "mongodb+srv://creditdata-xurnm.mongodb.net/rohi_db",
         'port': 8080,
         'username': 'rohiz',
-        'password': 'r2u4g6h8'
+        'password': '------'
     }
     # MONGO_URI = "mongodb+srv://rohiz:r2u4g6h8@creditdata-xurnm.mongodb.net/rohi_db"
