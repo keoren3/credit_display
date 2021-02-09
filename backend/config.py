@@ -14,4 +14,4 @@ class Config(object):
         'username': 'rohiz',
         'password': '------'
     }
-    # MONGO_URI = "mongodb+srv://rohiz:r2u4g6h8@creditdata-xurnm.mongodb.net/rohi_db"
+    # MONGO_URI = "mongodb+srv://rohiz:-------@creditdata-xurnm.mongodb.net/rohi_db"
