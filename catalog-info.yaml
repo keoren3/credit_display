@@ -8,3 +8,15 @@ spec:
   type: other
   lifecycle: unknown
   owner: oren
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: 'backend-balance-api-e2e'
+  annotations:
+    jenkins.io/github-folder: 'backend-balance-api-e2e'
+spec:
+  type: service
+  lifecycle: experimental
+  owner: oren
+
