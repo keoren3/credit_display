@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: credit_display
+  annotations:
+    github.com/project-slug: keoren3/credit_display
+spec:
+  type: other
+  lifecycle: unknown
+  owner: oren
