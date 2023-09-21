@@ -12,9 +12,9 @@ spec:
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: 'backend-balance-api-e2e'
+  name: 'terminate-offline-agents'
   annotations:
-    jenkins.io/github-folder: 'backend-balance-api-e2e'
+    jenkins.io/github-folder: 'terminate-offline-agents'
 spec:
   type: service
   lifecycle: experimental
